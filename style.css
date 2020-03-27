@@ -1,0 +1,36 @@
+body{
+    font-family: 'Amatic SC', cursive;
+    padding-top: 10px;
+    margin-top: 5px;
+}
+
+.jumbotron-fluid{
+    background-color: rgb(73, 73, 73);
+    text-align: center;
+    color: white;
+    padding: 0px;
+    font-family: 'Amatic SC', cursive;
+}
+.btn-group-vertical{
+    width: 100%;
+}
+.cities{
+    width: 100%;
+    border: solid, 10px, lightgray;
+}
+
+.left-nav{
+    margin-left: 10px;
+    background: lightgray
+
+
+}
+
+#city-search{
+    width: 60%;
+}
+
+#search-button{
+    width: 30%;
+
+}
