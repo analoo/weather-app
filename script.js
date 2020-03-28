@@ -45,13 +45,14 @@ $("#cities").on("click", function(){
 function renderWeatherData(){
     for (var i = '0'; i < 6; i++){
         var kelvinData = weatherData.list[i].main.temp;
-        console.log(kelvinData);
         var farenheitData =  parseFloat((kelvinData - 273.15) * 9/5 + 32).toFixed(1);
-        // weatherData.list[i].main.humidity;
-        // weatherData.list[i].wind.speed;
-        // weatherData.list[i].main.dt_text
-        // weatherData.list[i].weather.description;
         $("#day-"+i).append("<p>Temperature: "+farenheitData+"°F</p>")
+        $("#day-"+i).append("<p>Humidity: "+weatherData.list[i].main.humidity+"%</p>")
+
+        // weatherData.list[i].wind.speed;
+        var date = weatherData.list[i].main.dt_text
+        // weatherData.list[i].weather.description;
+        console.log(date);
         console.log("#day-"+i+"'");
 
     //     <p>Temperature: <span id=temp-val> 90.9F</span></p>
