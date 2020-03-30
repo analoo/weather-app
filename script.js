@@ -8,8 +8,8 @@ var forecastData;
 var weatherData;
 var ultraViolet;
 
-var forecastQuery = "http://api.openweathermap.org/data/2.5/forecast?q="+city+"&appid="+key;
-var currentWeatherQuery = "http://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+key;
+var forecastQuery = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + key;
+var currentWeatherQuery = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + key;
 
 function fiveDayForecast() {
     $.ajax({
@@ -17,11 +17,18 @@ function fiveDayForecast() {
         method: "GET"
     }).then(function (response) {
         forecastData = response;
-        console.log(forecastData)
+        $.ajax({
+            url: "http://api.openweathermap.org/data/2.5/uvi?appid=" + key + "&lat=" + weatherData.coord.lat + "&lon=" + weatherData.coord.lon,
+            method: "GET"
+        }).then(function (response) {
+
+            ultraViolet = response.value;
+            console.log(ultraViolet);
+        })
     })
 }
 
-function currentWeather(){
+function currentWeather() {
     $.ajax({
         url: currentWeatherQuery,
         method: "GET"
@@ -34,23 +41,6 @@ function currentWeather(){
 
 fiveDayForecast();
 currentWeather();
-// pullUVData();
-
-// function pullUVData(){
-//     lat = weatherData.city.coord.lat;
-//     long = weatherData.city.coord.lon;
-//     var query2 = "https://api.openweathermap.org/data/2.5/uvi?appid=" + key + "&lat=" + lat + "&lon=" + long;
-
-//     $.ajax({
-//         url: query2,
-//         method: "GET"
-//     }).then(function (response) {
-       
-//         ultraViolet = response.value; 
-//         console.log(ultraViolet);           
-//     })
-// }
-
 
 // $("#search-button").on("click", function () {
 //     event.preventDefault();
