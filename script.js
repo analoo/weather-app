@@ -78,7 +78,29 @@ function renderCurrentData() {
     $("#current").append("<p>Temperature: " + farenheitData + "°F</p>")
     $("#current").append("<p>Humidity: " + weatherData.main.humidity + "%</p>")
     $("#current").append("<p>Wind Speed: " + weatherData.wind.speed + " MPH</p>");
-    $("#current").append("<p>UV Index: " + ultraViolet + "</p>")
+    $("#current").append("<p id='uv-index'>UV Index:</p>");
+    var uvElement = $("<button>" + ultraViolet + "</button>");
+    $("#uv-index").append(uvElement);
+
+    if(ultraViolet <=2){
+        uvElement.attr("id","low");
+    }
+    else if(ultraViolet <=5){
+        uvElement.attr("id","moderate");
+    }
+    else if(ultraViolet <=7){
+        uvElement.attr("id","high");
+    }
+    else if(ultraViolet <=8.5){
+        uvElement.attr("id","very-high");
+    }
+    else if(ultraViolet >8.5){
+        uvElement.attr("id","Extreme");
+    }
+    else{
+        uvElement.attr("id","null");
+    }
+
 }
 function renderForecastData() {
     var j = 0;

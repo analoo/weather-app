@@ -34,3 +34,38 @@ body{
     width: 30%;
 
 }
+
+#low{
+    background-color: green;
+    color: white;
+    border: solid 1px white;
+    margin-left: 2px;
+
+}
+
+#moderate{
+    background-color: yellow;
+    color: black;
+    border: solid 1px white;
+    margin-left: 2px;
+}
+#high{
+    background-color: orange;
+    color: white;
+    border: solid 1px white;
+    margin-left: 2px;
+}
+
+#very-high{
+    background-color: red;
+    color: white;
+    border: solid 1px white;
+    margin-left: 2px;
+}
+
+#extreme{
+    background-color: purple;
+    color: white;
+    border: solid 1px white;
+    margin-left: 2px;
+}
