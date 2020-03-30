@@ -42,24 +42,25 @@ function currentWeather() {
 fiveDayForecast();
 currentWeather();
 
-// $("#search-button").on("click", function () {
-//     event.preventDefault();
-//     city = $("#city-search").val();
-//     cities.push(city);
-//     $("#location").text(city);
-//     renderCitiesList();
+$("#search-button").on("click", function () {
+    event.preventDefault();
+    if($("#city-search").val()!=""){
+        city = $("#city-search").val();
+        cities.push(city);
+        $("#location").text(city);
+        renderCitiesList();
+    }
+})
 
-// })
 
+function renderCitiesList() {
+    $("#cities-list").empty()
+    for (let i = 0; i < cities.length; i++) {
+        var button = $("<button type='button' class = 'btn btn-outline-secondary cities'>" + cities[i] + "</button>")
+        $("#cities-list").prepend(button)
+    }
 
-// function renderCitiesList() {
-//     $("#cities-list").empty()
-//     for (let i = 0; i < cities.length; i++) {
-//         var button = $("<button type='button' class = 'btn btn-outline-secondary cities'>" + cities[i] + "</button>")
-//         $("#cities-list").prepend(button)
-//     }
-
-// }
+}
 
 // $("#cities").on("click", function () {
 //     city = this.val()
