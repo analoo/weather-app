@@ -8,7 +8,6 @@ var forecastData;
 var weatherData;
 var ultraViolet;
 var todayDate = "2020-03-29"
-console.log(todayDate);
 
 function startProgram() {
     retrieveStoredCities();
@@ -25,13 +24,11 @@ function requestCurrentWeather(city) {
         method: "GET"
     }).then(function (response) {
         weatherData = response;
-        console.log(weatherData);
         $.ajax({
             url: "http://api.openweathermap.org/data/2.5/uvi?appid=" + key + "&lat=" + weatherData.coord.lat + "&lon=" + weatherData.coord.lon,
             method: "GET"
         }).then(function (response) {
             ultraViolet = response.value;
-            console.log(ultraViolet);
             renderCurrentData();
         });
 
@@ -55,7 +52,9 @@ $("#search-button").on("click", function () {
     event.preventDefault();
     if ($("#city-search").val() != "") {
         city = $("#city-search").val();
-        cities.push(city);
+        if(cities.indexOf(city)=== -1){
+            cities.push(city);
+        }
         $("#location").text(city);
         renderCitiesList();
         requestCurrentWeather(city);
@@ -67,21 +66,16 @@ $("#search-button").on("click", function () {
 function renderCitiesList() {
     $("#cities-list").empty()
     for (let i = 0; i < cities.length; i++) {
-        var button = $("<button type='button' class = 'btn btn-outline-secondary cities'>" + cities[i] + "</button>")
+        var button = $("<button type='button' class = 'btn cities'>" + cities[i] + "</button>")
         $("#cities-list").prepend(button)
     }
     storeCities();
 }
 
-$("#cities").on("click", function () {
-    city = this.val()
-    renderWeatherData()
-});
-
 function renderCurrentData() {
     $("#current").empty();
     var icon = $("<img src=http://openweathermap.org/img/wn/"+weatherData.weather[0].icon+".png />")
-    $("#current").append("<h3 id='temp'>" + city + " " + dateFormat(todayDate)+"</h3>");
+    $("#current").append("<h3 id='temp'>" + city + " (" + dateFormat(todayDate)+")</h3>");
     $("#temp").append(icon);
     
     let kelvinData = weatherData.main.temp;
@@ -154,5 +148,12 @@ function dateFormat(str){
     return (dateString[1].split("0")[1]+"/"+dateString[2]+"/"+dateString[0])
 
 }
+
+$(document).on("click", ".cities", function () {
+    city = $(this).text();
+    requestCurrentWeather(city);
+    fiveDayForecast(city);
+
+});
 
 startProgram()
