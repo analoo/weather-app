@@ -1,23 +1,24 @@
 
 var key = "c7d32a0040576541e78f3e61c878c6d1"
-var city = "Boulder"
-var cities = ["Los Angeles", "San Francisco"];
+var city = "Boulder";
+var cities = [];
 var lat;
 var long;
 var forecastData;
 var weatherData;
 var ultraViolet;
 
-var forecastQuery = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + key;
-var currentWeatherQuery = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + key;
 
 function startProgram() {
+    retrieveStoredCities();
     renderCitiesList();
-    fiveDayForecast();
-    currentWeather();
+    fiveDayForecast(city);
+    currentWeather(city);
 }
 
-function currentWeather() {
+function currentWeather(city) {
+    var currentWeatherQuery = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + key;
+
     $.ajax({
         url: currentWeatherQuery,
         method: "GET"
@@ -36,7 +37,8 @@ function currentWeather() {
     });
 }
 
-function fiveDayForecast() {
+function fiveDayForecast(city) {
+    var forecastQuery = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + key;
     $.ajax({
         url: forecastQuery,
         method: "GET"
@@ -53,6 +55,8 @@ $("#search-button").on("click", function () {
         cities.push(city);
         $("#location").text(city);
         renderCitiesList();
+        currentWeather(city);
+        fiveDayForecast(city);
     }
 })
 
@@ -63,6 +67,8 @@ function renderCitiesList() {
         var button = $("<button type='button' class = 'btn btn-outline-secondary cities'>" + cities[i] + "</button>")
         $("#cities-list").prepend(button)
     }
+    storeCities();
+    $("#current").empty();
 
 }
 
@@ -106,6 +112,7 @@ function renderCurrentData() {
 
 }
 function renderForecastData() {
+    $("#day-" + i).empty();
     var j = 0;
     for (var i = 0; i < 5; i++) {
         var date = forecastData.list[j].dt_txt.split(" ")[0];
@@ -118,6 +125,23 @@ function renderForecastData() {
         $("#day-" + i).append("<p>Humidity: " + forecastData.list[j].main.humidity + "%</p>")
         j+=8
     }
+}
+
+function storeCities(){
+    localStorage.setItem("wda-cities", JSON.stringify(cities));
+}
+
+function retrieveStoredCities(){
+    if (localStorage.getItem("wda-cities")=== null || JSON.parse(localStorage.getItem("wda-cities")).length=== 0){
+        localStorage.setItem("wda-cities", JSON.stringify(cities))
+        city = "San Francisco";
+    }
+    else{
+        cities = JSON.parse(localStorage.getItem("wda-cities"));
+        city = cities[cities.length-1];
+    }
+
+
 }
 
 
