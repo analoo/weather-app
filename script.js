@@ -7,19 +7,17 @@ var long;
 var forecastData;
 var weatherData;
 var ultraViolet;
-var todayDate = "2020-03-29-03"
+var todayDate = "2020-03-29"
 console.log(todayDate);
-
-
 
 function startProgram() {
     retrieveStoredCities();
     renderCitiesList();
+    requestCurrentWeather(city);
     fiveDayForecast(city);
-    currentWeather(city);
 }
 
-function currentWeather(city) {
+function requestCurrentWeather(city) {
     var currentWeatherQuery = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + key;
 
     $.ajax({
@@ -60,7 +58,7 @@ $("#search-button").on("click", function () {
         cities.push(city);
         $("#location").text(city);
         renderCitiesList();
-        currentWeather(city);
+        requestCurrentWeather(city);
         fiveDayForecast(city);
     }
 })
@@ -82,8 +80,8 @@ $("#cities").on("click", function () {
 
 function renderCurrentData() {
     var icon = $("<img src=http://openweathermap.org/img/wn/"+weatherData.weather[0].icon+".png />")
-    $("#location").text(city + " " + dateFormat(todayDate));
-    $("#location").append(icon);
+    $("#current").append("<h3>" + city + " " + dateFormat(todayDate)+"</h3>");
+    $("#current").append(icon);
     
     let kelvinData = weatherData.main.temp;
     let farenheitData = parseFloat((kelvinData - 273.15) * 9 / 5 + 32).toFixed(1);
