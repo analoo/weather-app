@@ -7,6 +7,9 @@ var long;
 var forecastData;
 var weatherData;
 var ultraViolet;
+var todayDate = "2020-03-29-03"
+console.log(todayDate);
+
 
 
 function startProgram() {
@@ -70,8 +73,6 @@ function renderCitiesList() {
         $("#cities-list").prepend(button)
     }
     storeCities();
-    $("#current").empty();
-
 }
 
 $("#cities").on("click", function () {
@@ -81,7 +82,7 @@ $("#cities").on("click", function () {
 
 function renderCurrentData() {
     var icon = $("<img src=http://openweathermap.org/img/wn/"+weatherData.weather[0].icon+".png />")
-    $("#location").text(city + " " + "(Date Formatted)");
+    $("#location").text(city + " " + dateFormat(todayDate));
     $("#location").append(icon);
     
     let kelvinData = weatherData.main.temp;
@@ -106,7 +107,7 @@ function renderCurrentData() {
         uvElement.attr("id","very-high");
     }
     else if(ultraViolet >8.5){
-        uvElement.attr("id","Extreme");
+        uvElement.attr("id","extreme");
     }
     else{
         uvElement.attr("id","null");
@@ -114,7 +115,6 @@ function renderCurrentData() {
 
 }
 function renderForecastData() {
-    $("#day-" + i).empty();
     var j = 0;
     for (var i = 0; i < 5; i++) {
         var date = forecastData.list[j].dt_txt.split(" ")[0];
