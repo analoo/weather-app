@@ -11,21 +11,10 @@ var ultraViolet;
 var forecastQuery = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + key;
 var currentWeatherQuery = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + key;
 
-function fiveDayForecast() {
-    $.ajax({
-        url: forecastQuery,
-        method: "GET"
-    }).then(function (response) {
-        forecastData = response;
-        $.ajax({
-            url: "http://api.openweathermap.org/data/2.5/uvi?appid=" + key + "&lat=" + weatherData.coord.lat + "&lon=" + weatherData.coord.lon,
-            method: "GET"
-        }).then(function (response) {
-
-            ultraViolet = response.value;
-            console.log(ultraViolet);
-        })
-    })
+function startProgram() {
+    renderCitiesList();
+    fiveDayForecast();
+    currentWeather();
 }
 
 function currentWeather() {
@@ -34,17 +23,31 @@ function currentWeather() {
         method: "GET"
     }).then(function (response) {
         weatherData = response;
-        console.log(weatherData)
+        console.log(weatherData);
+        $.ajax({
+            url: "http://api.openweathermap.org/data/2.5/uvi?appid=" + key + "&lat=" + weatherData.coord.lat + "&lon=" + weatherData.coord.lon,
+            method: "GET"
+        }).then(function (response) {
+            ultraViolet = response.value;
+            console.log(ultraViolet);
+            renderCurrentData();
+        });
 
+    });
+}
+
+function fiveDayForecast() {
+    $.ajax({
+        url: forecastQuery,
+        method: "GET"
+    }).then(function (response) {
+        forecastData = response;
     })
 }
 
-fiveDayForecast();
-currentWeather();
-
 $("#search-button").on("click", function () {
     event.preventDefault();
-    if($("#city-search").val()!=""){
+    if ($("#city-search").val() != "") {
         city = $("#city-search").val();
         cities.push(city);
         $("#location").text(city);
@@ -62,14 +65,21 @@ function renderCitiesList() {
 
 }
 
-// $("#cities").on("click", function () {
-//     city = this.val()
-//     renderWeatherData()
-// });
+$("#cities").on("click", function () {
+    city = this.val()
+    renderWeatherData()
+});
 
-// function renderWeatherData() {
-
-
+function renderCurrentData() {
+    $("#location").text(city + " " + "(Date Formatted)" + " " + weatherData.weather[0].main);
+    let kelvinData = weatherData.main.temp;
+    let farenheitData = parseFloat((kelvinData - 273.15) * 9 / 5 + 32).toFixed(1);
+    $("#day-0").append("<p>Temperature: " + farenheitData + "°F</p>")
+    $("#day-0").append("<p>Humidity: " + weatherData.main.humidity + "%</p>")
+    $("#day-0").append("<p>Wind Speed: " + weatherData.wind.speed + " MPH</p>");
+    $("#day-0").append("<p>UV Index: " + ultraViolet + "</p>")
+}
+// function renderForecastData() {
 //     for (var i = 0; i < 40; i++) {
 //         var date = weatherData.list[i].dt_txt.split(" ")[0];
 //         var dateFormatted = date;
@@ -84,14 +94,7 @@ function renderCitiesList() {
 //         // $("#day-" + i).append("<p>Temperature: " + farenheitData + "°F</p>")
 //         // $("#day-" + i).append("<p>Humidity: " + weatherData.list[i].main.humidity + "%</p>")
 //     }
-//     // $("#location").text(city + " " + dateFormatted + " " + weatherData.list[0].weather[0].main);
-
-//     // console.log("<h2>" + city + " " + dateFormatted + " " + weatherData.list[0].weather[0].main + "</h2>")
-//     // $("#day-0").append("<p>Temperature: " + farenheitData + "°F</p>")
-//     // $("#day-0").append("<p>Humidity: " + weatherData.list[i].main.humidity + "%</p>")
-//     // $("#day-0").append("<p>Wind Speed: " + weatherData.list[0].wind.speed + " MPH</p>");
-//     // $("#day-0").append("<p>UV Index: " + ultraViolet + "</p>")
 // }
 // renderWeatherData();
 
-// renderCitiesList();
+startProgram()
