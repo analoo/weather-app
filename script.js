@@ -45,6 +45,8 @@ function fiveDayForecast(city) {
     }).then(function (response) {
         forecastData = response;
         renderForecastData();
+        var date = forecastData.list[0].dt_txt.split(" ")[0];
+        dateFormat(date);
     })
 }
 
@@ -116,12 +118,12 @@ function renderForecastData() {
     var j = 0;
     for (var i = 0; i < 5; i++) {
         var date = forecastData.list[j].dt_txt.split(" ")[0];
-        var dateFormatted = date;
-        $("#day-" + i).append("<h4>" + dateFormatted + "</h4>")
+        var dateFormatted = dateFormat(date);
+        $("#day-" + i).append("<h6>" + dateFormatted + "</h6>")
         $("#day-" + i).append("<img src=http://openweathermap.org/img/wn/"+forecastData.list[j].weather[0].icon+".png />")
         var kelvinData = forecastData.list[j].main.temp;
         var farenheitData = parseFloat((kelvinData - 273.15) * 9 / 5 + 32).toFixed(1);
-        $("#day-" + i).append("<p>Temperature: " + farenheitData + "°F</p>")
+        $("#day-" + i).append("<p>Temp: " + farenheitData + "°F</p>")
         $("#day-" + i).append("<p>Humidity: " + forecastData.list[j].main.humidity + "%</p>")
         j+=8
     }
@@ -144,5 +146,12 @@ function retrieveStoredCities(){
 
 }
 
+
+;
+function dateFormat(str){
+    var dateString = str.split("-");
+    return (dateString[1].split("0")[1]+"/"+dateString[2]+"/"+dateString[0])
+
+}
 
 startProgram()
