@@ -72,7 +72,10 @@ $("#cities").on("click", function () {
 });
 
 function renderCurrentData() {
-    $("#location").text(city + " " + "(Date Formatted)" + " " + weatherData.weather[0].main);
+    var icon = $("<img src=http://openweathermap.org/img/wn/"+weatherData.weather[0].icon+".png />")
+    $("#location").text(city + " " + "(Date Formatted)");
+    $("#location").append(icon);
+    
     let kelvinData = weatherData.main.temp;
     let farenheitData = parseFloat((kelvinData - 273.15) * 9 / 5 + 32).toFixed(1);
     $("#current").append("<p>Temperature: " + farenheitData + "°F</p>")
@@ -108,8 +111,7 @@ function renderForecastData() {
         var date = forecastData.list[j].dt_txt.split(" ")[0];
         var dateFormatted = date;
         $("#day-" + i).append("<h4>" + dateFormatted + "</h4>")
-        var weatherDesc = forecastData.list[j].weather[0].main;
-        $("#day-" + i).append("<p>" + weatherDesc + "</p>")
+        $("#day-" + i).append("<img src=http://openweathermap.org/img/wn/"+forecastData.list[j].weather[0].icon+".png />")
         var kelvinData = forecastData.list[j].main.temp;
         var farenheitData = parseFloat((kelvinData - 273.15) * 9 / 5 + 32).toFixed(1);
         $("#day-" + i).append("<p>Temperature: " + farenheitData + "°F</p>")
