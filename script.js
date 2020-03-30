@@ -79,9 +79,10 @@ $("#cities").on("click", function () {
 });
 
 function renderCurrentData() {
+    $("#current").empty();
     var icon = $("<img src=http://openweathermap.org/img/wn/"+weatherData.weather[0].icon+".png />")
-    $("#current").append("<h3>" + city + " " + dateFormat(todayDate)+"</h3>");
-    $("#current").append(icon);
+    $("#current").append("<h3 id='temp'>" + city + " " + dateFormat(todayDate)+"</h3>");
+    $("#temp").append(icon);
     
     let kelvinData = weatherData.main.temp;
     let farenheitData = parseFloat((kelvinData - 273.15) * 9 / 5 + 32).toFixed(1);
@@ -113,8 +114,10 @@ function renderCurrentData() {
 
 }
 function renderForecastData() {
+    $("#forecast").empty();
     var j = 0;
     for (var i = 0; i < 5; i++) {
+        $("#forecast").append("<div class='card-body' id='day-"+i+"'></div>")
         var date = forecastData.list[j].dt_txt.split(" ")[0];
         var dateFormatted = dateFormat(date);
         $("#day-" + i).append("<h6>" + dateFormatted + "</h6>")
