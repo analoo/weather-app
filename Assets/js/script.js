@@ -32,16 +32,15 @@ function retrieveStoredCities(){
 }
 
 function requestCurrentWeather(city) {
-    var currentWeatherQuery = "//api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + key;
+    var currentWeatherQuery = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + key;
 
     $.ajax({
         url: currentWeatherQuery,
         method: "GET"
     }).then(function (response) {
         weatherData = response;
-        console.log(weatherData);
         $.ajax({
-            url: "//api.openweathermap.org/data/2.5/uvi?appid=" + key + "&lat=" + weatherData.coord.lat + "&lon=" + weatherData.coord.lon,
+            url: "https://api.openweathermap.org/data/2.5/uvi?appid=" + key + "&lat=" + weatherData.coord.lat + "&lon=" + weatherData.coord.lon,
             method: "GET"
         }).then(function (response) {
             ultraViolet = response.value;
@@ -52,7 +51,7 @@ function requestCurrentWeather(city) {
 }
 
 function fiveDayForecast(city) {
-    var forecastQuery = "//api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + key;
+    var forecastQuery = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + key;
     $.ajax({
         url: forecastQuery,
         method: "GET"
@@ -130,7 +129,6 @@ function renderForecastData() {
     var j = 0;
     for (var i = 0; i < 5; i++) {
         $("#forecast").append("<div class='days' id='day-"+i+"'></div>")
-
         var date = forecastData.list[j].dt_txt.split(" ")[0];
         var dateFormatted = dateFormat(date);
         $("#day-" + i).append("<h6>" + dateFormatted + "</h6>")
