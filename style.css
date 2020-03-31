@@ -67,3 +67,12 @@ body{
     border: solid 1px white;
     margin-left: 2px;
 }
+
+.card-body{
+    background-color: rgb(0, 162, 255);
+    border: solid 5px white;
+}
+
+#forecast{
+    padding-left: 5px;
+}
