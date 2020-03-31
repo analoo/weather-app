@@ -7,7 +7,10 @@ var long;
 var forecastData;
 var weatherData;
 var ultraViolet;
-var todayDate = "2020-03-29"
+var day = new Date().getDate();
+var month = new Date().getMonth() +1 ;
+var year = new Date().getFullYear();
+var todayDate = month + "/" + day + "/" + year
 
 function startProgram() {
     retrieveStoredCities();
@@ -24,6 +27,7 @@ function requestCurrentWeather(city) {
         method: "GET"
     }).then(function (response) {
         weatherData = response;
+        console.log(weatherData);
         $.ajax({
             url: "http://api.openweathermap.org/data/2.5/uvi?appid=" + key + "&lat=" + weatherData.coord.lat + "&lon=" + weatherData.coord.lon,
             method: "GET"
@@ -60,13 +64,17 @@ $("#search-button").on("click", function () {
         requestCurrentWeather(city);
         fiveDayForecast(city);
     }
+    $("#city-search").val("");
+
 })
 
 
 function renderCitiesList() {
     $("#cities-list").empty()
     for (let i = 0; i < cities.length; i++) {
-        var button = $("<button type='button' class = 'btn cities'>" + cities[i] + "</button>")
+        // var button = $("<button type='button' class = 'btn cities'>" + cities[i] + "</button>")
+
+        var button = $("<button class = 'cities'>" + cities[i] + "</button>")
         $("#cities-list").prepend(button)
     }
     storeCities();
@@ -75,7 +83,7 @@ function renderCitiesList() {
 function renderCurrentData() {
     $("#current").empty();
     var icon = $("<img src=http://openweathermap.org/img/wn/"+weatherData.weather[0].icon+".png />")
-    $("#current").append("<h3 id='temp'>" + city + " (" + dateFormat(todayDate)+")</h3>");
+    $("#current").append("<h3 id='temp'>" + city + " (" + todayDate +")</h3>");
     $("#temp").append(icon);
     
     let kelvinData = weatherData.main.temp;
@@ -111,7 +119,9 @@ function renderForecastData() {
     $("#forecast").empty();
     var j = 0;
     for (var i = 0; i < 5; i++) {
-        $("#forecast").append("<div class='card-body' id='day-"+i+"'></div>")
+        // $("#forecast").append("<div class='card-body' id='day-"+i+"'></div>")
+        $("#forecast").append("<div class='days' id='day-"+i+"'></div>")
+
         var date = forecastData.list[j].dt_txt.split(" ")[0];
         var dateFormatted = dateFormat(date);
         $("#day-" + i).append("<h6>" + dateFormatted + "</h6>")
