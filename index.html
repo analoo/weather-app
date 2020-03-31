@@ -17,36 +17,33 @@
 </head>
 
 <body>
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-            <h1 class="display-5">Weather Dashboard</h1>
-        </div>
-    </div>
+    <header>
+        <h1>Weather Dashboard</h1>
+    </header>
 
+    <aside>
+        <h4>Search for a City:</h4>
+        <form>
+            <div id="search">
+                <input type="text" id="city-search" placeholder="" />
+                <input type="image" id="search-button" src="Assets/search.png"/>
+            </div>
+        </form>
+        <div id="cities-list">
+        </div>
+    </aside>
+    <main>
+        <div id="current">
+        </div>
+        <h4 id="forecast-header">5 day Forecast </h4> 
+
+        <div class="5days" id="forecast">
+
+        </div>
+    </main>
     <div class="row">
-        <div class="col-3 left-nav">
-            <form>
-                <div class="form-group">
-                    <label for="search">Search for a City:</label>
-                    <div>
-                        <input type="text" class="form-control" id="city-search" placeholder="">
-                        <button type="submit" class="btn btn-primary my-2 my-sm-0" id="search-button">search</button>
-                    </div>
-                </div>
-            </form>
-            <div class="btn-group-vertical" id="cities-list">
-            </div>
-        </div>
-        <div class="col-8">
-            <div class="card" id="current">
-        
-                
-            </div>
-            <h1>5 day Forecast </h1>
-
-            <div class="row" id="forecast">
-
-            </div>
+        <div class="col-12">
+           
         </div>
 
 
