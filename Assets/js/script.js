@@ -1,12 +1,13 @@
 
 var key = "c7d32a0040576541e78f3e61c878c6d1"
-var city = "Boulder";
+var city;
 var cities = [];
-var lat;
-var long;
+
 var forecastData;
 var weatherData;
+
 var ultraViolet;
+
 var day = new Date().getDate();
 var month = new Date().getMonth() +1 ;
 var year = new Date().getFullYear();
@@ -17,6 +18,17 @@ function startProgram() {
     renderCitiesList();
     requestCurrentWeather(city);
     fiveDayForecast(city);
+}
+
+function retrieveStoredCities(){
+    if (localStorage.getItem("wda-cities")=== null || JSON.parse(localStorage.getItem("wda-cities")).length=== 0){
+        localStorage.setItem("wda-cities", JSON.stringify(cities))
+        city = "San Francisco";
+    }
+    else{
+        cities = JSON.parse(localStorage.getItem("wda-cities"));
+        city = cities[cities.length-1];
+    }
 }
 
 function requestCurrentWeather(city) {
@@ -135,18 +147,7 @@ function storeCities(){
     localStorage.setItem("wda-cities", JSON.stringify(cities));
 }
 
-function retrieveStoredCities(){
-    if (localStorage.getItem("wda-cities")=== null || JSON.parse(localStorage.getItem("wda-cities")).length=== 0){
-        localStorage.setItem("wda-cities", JSON.stringify(cities))
-        city = "San Francisco";
-    }
-    else{
-        cities = JSON.parse(localStorage.getItem("wda-cities"));
-        city = cities[cities.length-1];
-    }
 
-
-}
 
 
 ;

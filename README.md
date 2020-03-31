@@ -18,26 +18,25 @@ This website is a simple weather dashboard that shows current data and a five da
 
 ## Code Snippet
 
-The save activity function is highlighted below because it was an "AHA" moment about how data elements can be used to create references to id's without being forced to give multiple elements the same class value.
+The render forecast data function proved to be challenging because of how Open Weather sends forecast data. Rather than showing complete days, the API call retrieves data from 24 hours from now and then every 3 hours after that. I ended up using a for loop to create 5 elements with all of the needed information and then using an index j to retrieve data from the API call. Index j started at 0 but then incremented by 8, meaning that the forecast shows 24 hours, 48 hours, 72 hours and so on.
 
 
 ```
-function saveActivity() {
-    // pulls data id value from save button
-    var dataID = $(this).data("id");
-    // turns value into integer value, matching to desired index
-    var index = dataID.split("li")[1];
-    // extracts the value of the activity description
-    var newDescValue = $("#" + dataID).val();
-    // and assigns it back to the planner data
-    plannerData[index].activity = newDescValue;
-    // this is then stored locally
-    localStorage.setItem("pd-AMF", JSON.stringify(plannerData));
-    // the rendered HTML is cleared
-    $(".container").empty();
-    // and the renderPlannerData function is reran
-    renderPlannerData();
-
+function renderForecastData() {
+    $("#forecast").empty();
+    var j = 0;
+    for (var i = 0; i < 5; i++) {
+        $("#forecast").append("<div class='days' id='day-"+i+"'></div>")
+        var date = forecastData.list[j].dt_txt.split(" ")[0];
+        var dateFormatted = dateFormat(date);
+        $("#day-" + i).append("<h6>" + dateFormatted + "</h6>")
+        $("#day-" + i).append("<img src=http://openweathermap.org/img/wn/"+forecastData.list[j].weather[0].icon+".png />")
+        var kelvinData = forecastData.list[j].main.temp;
+        var farenheitData = parseFloat((kelvinData - 273.15) * 9 / 5 + 32).toFixed(1);
+        $("#day-" + i).append("<p>Temp: " + farenheitData + "°F</p>")
+        $("#day-" + i).append("<p>Humidity: " + forecastData.list[j].main.humidity + "%</p>")
+        j+=8
+    }
 }
 ```
 
