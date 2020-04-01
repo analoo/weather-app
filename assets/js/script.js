@@ -13,6 +13,7 @@ var month = new Date().getMonth() +1 ;
 var year = new Date().getFullYear();
 var todayDate = month + "/" + day + "/" + year
 
+// makes starting conditions for the website
 function startProgram() {
     retrieveStoredCities();
     renderCitiesList();
@@ -20,6 +21,7 @@ function startProgram() {
     fiveDayForecast(city);
 }
 
+// function checks whether localstorage returns null or empty and defaults city value to SF in that case
 function retrieveStoredCities(){
     if (localStorage.getItem("wda-cities")=== null || JSON.parse(localStorage.getItem("wda-cities")).length=== 0){
         localStorage.setItem("wda-cities", JSON.stringify(cities))
@@ -31,6 +33,8 @@ function retrieveStoredCities(){
     }
 }
 
+
+// This function actually does 2 API calls, the first gets weather information and lat/long which is needed for the second API call
 function requestCurrentWeather(city) {
     var currentWeatherQuery = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + key;
 
@@ -50,6 +54,7 @@ function requestCurrentWeather(city) {
     });
 }
 
+// This function makes a call to the five Day forecast API
 function fiveDayForecast(city) {
     var forecastQuery = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + key;
     $.ajax({
@@ -63,6 +68,7 @@ function fiveDayForecast(city) {
     })
 }
 
+// This function stores the value of the search and runs weather requests, stores the data value on a list resets the search bar once a value has been submitted
 $("#search-button").on("click", function () {
     event.preventDefault();
     if ($("#city-search").val() != "") {
@@ -80,6 +86,7 @@ $("#search-button").on("click", function () {
 })
 
 
+// dynamically creates cities list on the page and stores the values to local storage
 function renderCitiesList() {
     $("#cities-list").empty()
     for (let i = 0; i < cities.length; i++) {
@@ -89,6 +96,15 @@ function renderCitiesList() {
     storeCities();
 }
 
+// gives click event listener to all elements with the class cities
+$(document).on("click", ".cities", function () {
+    city = $(this).text();
+    requestCurrentWeather(city);
+    fiveDayForecast(city);
+
+});
+
+// dynamically creates current and UV data elements based on API query results
 function renderCurrentData() {
     $("#current").empty();
     var icon = $("<img src=http://openweathermap.org/img/wn/"+weatherData.weather[0].icon+".png />")
@@ -104,6 +120,7 @@ function renderCurrentData() {
     var uvElement = $("<button>" + ultraViolet + "</button>");
     $("#uv-index").append(uvElement);
 
+    // ids are added to UV button element based on value so that box color changes based on the value
     if(ultraViolet <=2){
         uvElement.attr("id","low");
     }
@@ -124,6 +141,8 @@ function renderCurrentData() {
     }
 
 }
+
+// dynamically creates 5 day forcast data elements based on API query results
 function renderForecastData() {
     $("#forecast").empty();
     var j = 0;
@@ -141,25 +160,16 @@ function renderForecastData() {
     }
 }
 
+// stores cities list into local storage
 function storeCities(){
     localStorage.setItem("wda-cities", JSON.stringify(cities));
-}
+};
 
-
-
-
-;
+// formats date data from how it is returned on the API
 function dateFormat(str){
     var dateString = str.split("-");
     return (dateString[1].split("0")[1]+"/"+dateString[2]+"/"+dateString[0])
 
 }
-
-$(document).on("click", ".cities", function () {
-    city = $(this).text();
-    requestCurrentWeather(city);
-    fiveDayForecast(city);
-
-});
 
 startProgram()
