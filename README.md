@@ -10,7 +10,7 @@ This website is a simple weather dashboard that shows current data and a five da
 
 
 ## Technologies Used
-- JQuery - used to build a responsive website and make API calls
+- JQuery - used to build a responsive website, create elements and make API calls
 - HTML - used to create elements
 - CSS - for styles elements on page
 - Git - version control system to track changes to source code
